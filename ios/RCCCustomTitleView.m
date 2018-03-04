@@ -29,15 +29,23 @@
         
         if ([alignment isEqualToString:@"fill"]) {
             self.frame = frame;
-            self.subView.frame = self.frame;
+            subView.sizeFlexibility = RCTRootViewSizeFlexibilityNone;
         } else {
             self.subView.delegate = self;
+            subView.sizeFlexibility = RCTRootViewSizeFlexibilityWidthAndHeight;
         }
         
         [self addSubview:subView];
     }
     
     return self;
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    if ([self.alignment isEqualToString:@"fill"]) {
+        [self.subView setFrame:self.bounds];
+    }
 }
 
 - (void)rootViewDidChangeIntrinsicSize:(RCTRootView *)rootView {
